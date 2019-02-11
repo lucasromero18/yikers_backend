@@ -3,49 +3,32 @@ const situations = require("../controllers/situations.js")
 const comments = require("../controllers/comments.js")
 const login_register = require("../controllers/login_register.js")
 const categories = require("../controllers/categories.js")
-const solution_rating = require("../controllers/solution_rating.js")
 const jwt = require('jsonwebtoken');
 const secret = process.env.JWT_SECRET || 'yikecity'
 
 
 module.exports = (app) => {
 
-    //USERS
+//WITHIN getAllSituations, MAKE JOIN KNEX CALL TO GRAB ALL SOLUTION_RATINGS AS WELL
+
+    //TOKEN NOT REQUIRED
+    app.post('/login', login_register.login);
+    app.get('/register', login_register.register);
+
+    app.use(verifytoken)
+
+    //TOKEN REQUIRED
     app.get('/users', users.getAllUsers);
     app.patch('/users/:id', users.editUser);
-    app.delete('/user/delete/:id', users.deleteUser);
-
-    //SITUATIONS
-    //WITHIN getAllSituations, MAKE JOIN KNEX CALL TO GRAB ALL SOLUTION_RATINGS AS WELL
     app.get('/situations', situations.getAllSituations);
     app.post('/situations/addSituation', situations.addSituation);
     app.patch('/situations/editSituation/:id', situations.editSituation);
     app.delete('/situations/deleteSituation/:id', situations.deleteSituation);
-
-
-    //COMMENTS
     app.get('/comments', comments.getAllComments);
     app.post('/comments/addComment', comments.addComment);
     app.patch('/comments/editComment/:id', comments.editComment);
     app.delete('/comments/delete/:id', comments.deleteComment);
-
-
-
-
-
-    //DONT FORGET TO INCORPORATE app.use(verifytoken) AND REARRANGE ROUTES
-    //APPROPRIATELY TO WORK WITH TOKEN
-
-
-    //LOGIN_REGISTER
-    app.post('/login', login_register.login);
-    app.get('/register', login_register.register);
-
-
-
-    //CATEGORIES
     app.get('/categories', categories.getAllCategories);
-
 
 }
 
