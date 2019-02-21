@@ -3,7 +3,7 @@ const knex = require("../db/knex.js");
 
 module.exports = {
 
-    getAllusers: (req, res) => {
+    getAllUsers: (req, res) => {
         knex('users').then((results) => {
             res.json(results)
         })

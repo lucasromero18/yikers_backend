@@ -13,23 +13,24 @@ module.exports = (app) => {
 
     //TOKEN NOT REQUIRED
     app.post('/login', login_register.login);
-    app.get('/register', login_register.register);
-
-    app.use(verifytoken)
+    app.post('/register',login_register.register);
+    app.get('/users', users.getAllUsers);
+    app.get('/situations', situations.getAllSituations);
+    app.get('/comments', comments.getAllComments);
+    app.get('/categories', categories.getAllCategories);
 
     //TOKEN REQUIRED
-    app.get('/users', users.getAllUsers);
-    app.patch('/users/:id', users.editUser);
-    app.get('/situations', situations.getAllSituations);
+
+    //USERS
+    app.patch('/users/:id', verifyToken, users.editUser);
+    //SITUATIONS
     app.post('/situations/addSituation', situations.addSituation);
     app.patch('/situations/editSituation/:id', situations.editSituation);
     app.delete('/situations/deleteSituation/:id', situations.deleteSituation);
-    app.get('/comments', comments.getAllComments);
+    //COMMENTS
     app.post('/comments/addComment', comments.addComment);
     app.patch('/comments/editComment/:id', comments.editComment);
     app.delete('/comments/delete/:id', comments.deleteComment);
-    app.get('/categories', categories.getAllCategories);
-
 }
 
 function verifyToken(req, res, next) {

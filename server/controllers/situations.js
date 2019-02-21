@@ -10,8 +10,9 @@ module.exports = {
     },
 
     addSituation: (req, res) => {
-        knex('situations').insert(req.body).then((results) => {
-            res.json(results)
+        console.log(req.body)
+        knex('situations').insert(req.body, '*').then((results) => {
+            res.json(results[0])
         })
     },
 
@@ -21,7 +22,7 @@ module.exports = {
         })
     },
 
-    deleteReview: (req, res) => {
+    deleteSituation: (req, res) => {
         knex('situations').del().where('id', req.params.id).then((results) => {
             res.send(200)
         })

@@ -6,16 +6,19 @@ const secret = process.env.JWT_SECRET || 'yikecity'
 module.exports = {
 
     login: (req, res) => {
+      console.log('this is the body', req.body)
         knex('users')
         .where('username', req.body.username)
         .first()
         .then((user)=>{
+          console.log(user)
           if(user){
             hasher.check(user, req.body).then((isMatch)=>{
               if(isMatch){
                 const token = jwt.sign(user, secret);
                 delete user.password;
-                res.json({message: "Successfully signed in", token, user})
+                console.log({token, user})
+                res.json(JSON.stringify({token, user}))
               }else{
                 res.status(400).send({message: 'Invalid Email / Password'});
               }
@@ -31,7 +34,7 @@ module.exports = {
     register: (req, res) => {
         hasher.hash(req.body).then((user)=>{
             knex('users').insert({
-              userName: user.userame,
+              username: user.username,
               email: user.email,
               age: user.age,
               password: user.password
